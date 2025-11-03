@@ -59,7 +59,7 @@ jobs:
           ./gradlew clean build -x test
 
         # ✅ ⑦ Spring Boot 실행 테스트 (RDS 대신 로컬 MySQL 사용)
-      - name: 🚀 Run Spring Boot with Local MySQL
+            - name: 🚀 Run Spring Boot with Local MySQL
         env:
           SPRING_PROFILES_ACTIVE: aws
           DB_USERNAME: root
@@ -68,6 +68,12 @@ jobs:
           AWS_ACCESS_KEY: dummy
           AWS_SECRET_KEY: dummy
           AWS_REGION: ap-northeast-2
+          GOOGLE_CLIENT_ID: dummy
+          GOOGLE_SECRET: dummy
+          KAKAO_CLIENT_ID: dummy
+          KAKAO_CLIENT_SECRET: dummy
+          NAVER_CLIENT_ID: dummy
+          NAVER_CLIENT_SECRET: dummy
         run: |
           echo "🚀 Starting backend for test..."
           java \
@@ -79,3 +85,4 @@ jobs:
             --spring.datasource.username=${DB_USERNAME} \
             --spring.datasource.password=${DB_PASSWORD} \
             --spring.main.web-application-type=none
+
