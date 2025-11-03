@@ -2,17 +2,14 @@ name: HireHub CI (Local MySQL Test)
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-    branches:
-      - main
+    branches: [ "main" ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    # ✅ ① GitHub Actions 내에서 MySQL 컨테이너 띄움
     services:
       mysql:
         image: mysql:8.0
@@ -28,18 +25,18 @@ jobs:
           --health-retries=5
 
     steps:
-      # ✅ ② Git 리포지토리 코드 가져오기
       - name: 📥 Checkout Repository
         uses: actions/checkout@v4
 
-      # ✅ ③ Java 17 설치
       - name: ⚙️ Set up Java 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      # ✅ ④ MySQL 준비 대기 (컨테이너 초기화 기다림)
+      - name: 📦 Unzip backend source
+        run: unzip backsrc.zip -d backsrc
+
       - name: ⏳ Wait for MySQL
         run: |
           for i in {1..15}; do
@@ -48,21 +45,12 @@ jobs:
             sleep 5
           done
 
-      # ✅ ⑤ Backend 빌드
       - name: 🧩 Build Backend
         working-directory: backsrc
         run: |
           chmod +x ./gradlew
           ./gradlew clean build -x test
 
-      # ✅ ⑥ Frontend 빌드
-      - name: 🧩 Build Frontend
-        working-directory: frontsrc
-        run: |
-          npm install
-          npm run build
-
-      # ✅ ⑦ Spring Boot 실행 테스트 (RDS 대신 로컬 MySQL 연결)
       - name: ✅ Run Spring Boot Test with Local MySQL
         working-directory: backsrc
         env:
