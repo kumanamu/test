@@ -46,10 +46,9 @@ jobs:
           done
 
       - name: 🧩 Build Backend
-        working-directory: backsrc
-        run: |
-          chmod +x ./gradlew
-          ./gradlew clean build -x test
+  run: |
+    chmod +x ./gradlew
+    ./gradlew clean build -x test
 
       - name: ✅ Run Spring Boot Test with Local MySQL
         working-directory: backsrc
