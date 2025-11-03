@@ -58,8 +58,8 @@ jobs:
           chmod +x ./gradlew
           ./gradlew clean build -x test
 
-        # ✅ ⑦ Spring Boot 실행 테스트 (RDS 대신 로컬 MySQL 사용)
-            - name: 🚀 Run Spring Boot with Local MySQL
+      # ✅ ⑦ Spring Boot 실행 테스트 (로컬 MySQL 사용)
+      - name: 🚀 Run Spring Boot with Local MySQL
         env:
           SPRING_PROFILES_ACTIVE: aws
           DB_USERNAME: root
@@ -85,4 +85,3 @@ jobs:
             --spring.datasource.username=${DB_USERNAME} \
             --spring.datasource.password=${DB_PASSWORD} \
             --spring.main.web-application-type=none
-
