@@ -34,9 +34,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: 📦 Unzip backend source
-        run: unzip backsrc.zip -d backsrc
-
       - name: ⏳ Wait for MySQL
         run: |
           for i in {1..15}; do
@@ -46,12 +43,11 @@ jobs:
           done
 
       - name: 🧩 Build Backend
-  run: |
-    chmod +x ./gradlew
-    ./gradlew clean build -x test
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build -x test
 
       - name: ✅ Run Spring Boot Test with Local MySQL
-        working-directory: backsrc
         env:
           SPRING_PROFILES_ACTIVE: aws
           DB_USERNAME: root
@@ -62,4 +58,8 @@ jobs:
           AWS_REGION: ap-northeast-2
         run: |
           echo "🚀 Starting backend for test..."
-          java -jar build/libs/*SNAPSHOT.jar --spring.datasource.url=${DB_URL} --spring.datasource.username=root --spring.datasource.password=root --spring.main.web-application-type=none
+          java -jar build/libs/*SNAPSHOT.jar \
+            --spring.datasource.url=${DB_URL} \
+            --spring.datasource.username=root \
+            --spring.datasource.password=root \
+            --spring.main.web-application-type=none
